@@ -242,7 +242,8 @@ def run_inference(script_args, model_config):
         output_ids = model.generate(input_ids, **gen_kwargs)
         response = tokenizer.batch_decode(output_ids)[0]
         print(f"Prompt: {prompt}")
-        print(f"Response (first 500 chars):\n{response[:500]}...\n")
+        print(f"Response:\n{response}\n")
+        print("="*80 + "\n")
 
 
 def main(script_args, training_args, model_config):
