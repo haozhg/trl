@@ -1,0 +1,35 @@
+# Configuration for multilingual reasoner inference
+# Based on: https://huggingface.co/docs/trl/tutorials/multilingual_reasoner
+#
+# Usage:
+#   python examples/multilingual_reasoner/multilingual_reasoner.py \
+#       --config examples/multilingual_reasoner/recipes/config_inference.yaml
+
+##########################
+# Model arguments
+##########################
+model_name_or_path: openai/gpt-oss-20b
+model_revision: main
+trust_remote_code: false
+attn_implementation: eager
+
+##########################
+# Script arguments
+##########################
+inference_only: true
+peft_model_id: gpt-oss-20b-multilingual-reasoner  # Path to your fine-tuned model
+reasoning_language: German
+inference_prompt: "¿Cuál es el capital de Australia?"
+
+##########################
+# Optional: Test different languages
+##########################
+# You can modify these values to test different language combinations:
+# - reasoning_language: The language the model should use for its internal reasoning
+#   Options: German, French, Spanish, Italian, Chinese, Hindi, etc.
+# - inference_prompt: The question to ask (can be in any language)
+#   Examples:
+#     - "What is the capital of France?"  (English)
+#     - "¿Cuál es el capital de Australia?" (Spanish)
+#     - "Qui a écrit 'Les Misérables'?" (French)
+#     - "Was ist die Hauptstadt von Deutschland?" (German)

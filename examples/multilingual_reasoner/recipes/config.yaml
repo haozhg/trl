@@ -1,0 +1,91 @@
+# Configuration for multilingual reasoner fine-tuning
+# Based on: https://huggingface.co/docs/trl/tutorials/multilingual_reasoner
+#
+# Usage:
+#   accelerate launch --config_file examples/accelerate_configs/multi_gpu.yaml \
+#       examples/multilingual_reasoner/multilingual_reasoner.py \
+#       --config examples/multilingual_reasoner/recipes/config.yaml
+
+##########################
+# Model arguments
+##########################
+model_name_or_path: openai/gpt-oss-20b
+model_revision: main
+trust_remote_code: false
+attn_implementation: eager
+
+# PEFT / LoRA configuration
+use_peft: true
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.0
+lora_target_modules: all-linear
+# Note: target_parameters for MoE layers are set automatically in the script
+lora_target_parameters:
+  - 7.mlp.experts.gate_up_proj
+  - 7.mlp.experts.down_proj
+  - 15.mlp.experts.gate_up_proj
+  - 15.mlp.experts.down_proj
+  - 23.mlp.experts.gate_up_proj
+  - 23.mlp.experts.down_proj
+
+##########################
+# Dataset arguments
+##########################
+dataset_name: HuggingFaceH4/Multilingual-Thinking
+dataset_train_split: train
+
+##########################
+# Training arguments
+##########################
+# Output and logging
+output_dir: gpt-oss-20b-multilingual-reasoner
+run_name: multilingual-reasoner
+logging_steps: 1
+save_strategy: epoch
+save_total_limit: 2
+report_to: wandb
+
+# Training hyperparameters
+learning_rate: 2.0e-4
+num_train_epochs: 1
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 16
+gradient_checkpointing: true
+warmup_ratio: 0.03
+lr_scheduler_type: cosine_with_min_lr
+lr_scheduler_kwargs:
+  min_lr_rate: 0.1
+
+# Data processing
+max_length: 2048
+packing: false
+padding_free: false
+
+# Hub and checkpointing
+push_to_hub: false
+hub_model_id: null
+hub_strategy: every_save
+
+# Optimization
+bf16: true
+tf32: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+
+# Misc
+seed: 42
+dataloader_num_workers: 4
+remove_unused_columns: true
+
+# dataloader
+dataloader_num_workers: 4
+dataloader_pin_memory: true
+dataloader_prefetch_factor: 2
+dataloader_persistent_workers: true
+
+# evaluation
+eval_strategy: 'steps'
+eval_steps: 10
+eval_on_start: true
+per_device_eval_batch_size: 1
