@@ -60,9 +60,7 @@ python examples/multilingual_reasoner/multilingual_reasoner.py \
 See [recipes/](recipes/) directory:
 
 - **[config.yaml](recipes/config.yaml)** - Multi-GPU training (8 GPUs)
-- **[config_single_gpu.yaml](recipes/config_single_gpu.yaml)** - Single GPU training
 - **[config_inference.yaml](recipes/config_inference.yaml)** - Inference only
-- **[config_full.yaml](recipes/config_full.yaml)** - Full config with all options
 - **[README.md](recipes/README.md)** - Detailed documentation
 
 ## What This Does
